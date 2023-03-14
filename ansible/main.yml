@@ -1,0 +1,40 @@
+- name: Install docker
+  hosts: all
+  become: true
+  become_method: sudo
+  become_user: root
+  remote_user: ec2-user
+  tasks:
+    - name: Update the yum repos and install docker
+      ansible.builtin.yum:
+        update_cache: true
+        name: docker
+        state: present
+    - name: Enable and start docker service
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+    - name: Add ec2-user to docker group
+      ansible.builtin.user:
+        user: ec2-user
+        groups:
+          - docker
+        append: true
+    - name: Install docker module for python
+      ansible.builtin.pip:
+        name: docker-py
+        state: present
+    - name: Run nginx container
+      community.docker.docker_container:
+        name: nginx
+        image: nginx
+        ports:
+          - 8080:80
+        state: started
+    - name: Test the web server status
+      ansible.builtin.uri:
+        url: "http://{{ endpoint_ip }}:8080"
+        status_code:
+          - 200
+        method: GET

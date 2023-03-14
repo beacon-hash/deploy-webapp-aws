@@ -1,0 +1,6 @@
+.terraform/*
+*.tfstate.*
+*.tfvars
+*.tfstate
+*.pem
+ansible/inventory
