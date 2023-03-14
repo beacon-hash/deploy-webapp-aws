@@ -82,19 +82,7 @@ resource "aws_instance" "webapp-server" {
         Name = "webapp-server"
     }
 }
-# data "aws_instance" "webapp-server-state" {
-#     instance_id = aws_instance.webapp-server.id
-# }
-# resource "null_resource" "start-if-stopped" {
-#     count = data.aws_instance.webapp-server-state.instance_state == "stopped" ? 1 : 0
-#     provisioner "local-exec" {
-#         command = "aws ec2 start-instances --instance-ids ${aws_instance.webapp-server.id}"
-#     }
-#     triggers = {
-#     always_run = timestamp()
-#     "before" = "${aws_instance.webapp-server.id}"
-#     }
-# }
+
 resource "local_file" "ansible-inventory" {
     filename = "ansible/inventory"
     content = aws_instance.webapp-server.public_ip

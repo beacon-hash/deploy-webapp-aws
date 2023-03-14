@@ -19,9 +19,6 @@ variable "webapp_igw_name" {
 variable "webapp_security_group_name" {
     type = string
 }
-variable "webapp_server" {
-    type = string
-}
 variable "webapp_instance_type" {
     type = string
 }
