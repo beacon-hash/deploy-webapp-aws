@@ -3,7 +3,7 @@
 
 ## Overview
 
-In this project, I'm trying to automate the process of deploying a simple web application based on AWS:
+In this project, I'm trying to automate the process of deploying a simple web application on AWS:
 
 - [Terraform](https://registry.terraform.io) - As an infrastructure provisioning tool to automate the infrastructure provisioning process
 - [Ansible](https://www.ansible.com) - As a configuration management tool to configure the web application server after provisioning
