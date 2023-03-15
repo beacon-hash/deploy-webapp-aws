@@ -90,7 +90,11 @@ resource "local_file" "ansible-inventory" {
 
 resource "null_resource" "configure-server" {
     provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/inventory --private-key ${local_file.pem-file.filename} --extra-vars 'endpoint_ip=${aws_instance.webapp-server.public_ip}' ansible/main.yml"
+    command = <<-EOF
+    #/bin/bash
+    until nc -vz ${aws_instance.webapp-server.public_ip} 22; do echo waiting for ec2 instance to be fully initialized and reachable; done
+    ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ansible/inventory --private-key ${local_file.pem-file.filename} --extra-vars 'endpoint_ip=${aws_instance.webapp-server.public_ip}' ansible/main.yml
+    EOF
     }
     triggers = {
     always_run = timestamp()
